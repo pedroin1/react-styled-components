@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Image from './images/formicon.jpg'
+import { ButtonStyled, ContainerStyled, UlStyled} from './styles';
 
 function App() {
+
+  const [coment, setComent] = useState();
+  const [allComents, setAllComents] = useState([])
+
+  function clear(){
+    setComent('')
+  }
+
+  const handlerClickButton = () => {
+    if(coment){
+      let allOldComents = [...allComents, coment];
+      setAllComents(allOldComents);
+      clear()
+    }else{
+      alert('anotacao vazia')
+    }
+  }
+
+  const handlerTextArea = (event) => {
+    setComent(event.target.value)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContainerStyled>
+      <img src={Image} alt='imagem-pessoas'/>
+      <textarea onChange={handlerTextArea} value={coment} placeholder='Seu comentário aqui'></textarea>
+      <ButtonStyled digitado={coment} onClick={handlerClickButton}>Comentar</ButtonStyled>
+       
+      <UlStyled tamanhoLista = {allComents.length}>
+          {
+            allComents.map((coment, index) => {
+              return <li key={index}>{coment}</li>
+            })
+          }
+      </UlStyled>
+    </ContainerStyled>
   );
 }
 
